@@ -8,16 +8,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract BeeToken is ERC20, ERC20Burnable, Ownable {
     mapping(address => uint) public claimMap;
-    mapping(address => bool) public mockTokenMap;
 
     modifier claimCheck(address to) {
         require(claimMap[to] <= 0, "already claimed");
         _;
     }
 
-    constructor(
-        address initialOwner
-    ) ERC20("BeeToken", "BT") Ownable(initialOwner) {
+    constructor(address initialOwner) ERC20("BeeToken", "BT") Ownable(initialOwner) {
         _mint(msg.sender, 50000 * 10 ** decimals());
     }
 
@@ -26,10 +23,6 @@ contract BeeToken is ERC20, ERC20Burnable, Ownable {
         _mint(to, 50);
     }
 
-    function mockToken(address to, uint amount) public onlyOwner {
-        require(mockTokenMap[to], "you can't mock token");
-        _mint(to, amount);
-    }
 
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
